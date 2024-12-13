@@ -1,6 +1,6 @@
 "use client";
 
-import { Cross2Icon } from "@radix-ui/react-icons";
+import { Cross2Icon, PlusCircledIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { useState } from "react";
 import { DataTableViewOptions } from "./data-table-view-options";
 import { TrashIcon } from "lucide-react";
+import DataDialog from "../Data-Dialog/DataDialog";
 
 interface DataTableToolbarProps<TData> {
     table: Table<TData>;
@@ -55,6 +56,7 @@ export function DataTableToolbar<TData>({
                         <Cross2Icon className="ml-2 h-4 w-4" />
                     </Button>
                 )}
+                <DataDialog />
             </div>
 
             <div className="flex items-center gap-2">
