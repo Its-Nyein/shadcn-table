@@ -11,7 +11,7 @@ export default function Header() {
                 <span className="text-xl">DataTable Component</span>
             </div>
             <div className="flex items-center gap-4">
-                <Button variant="ghost" size="icon" className="size-9" asChild>
+                <Button variant="outline" size="icon" className="size-9" asChild>
                     <Link
                         aria-label="GitHub repo"
                         href={siteConfig.links.github}

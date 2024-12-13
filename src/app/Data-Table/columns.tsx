@@ -6,8 +6,31 @@ import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const columns: ColumnDef<Expense>[] = [
+    {
+        id: "select",
+        header: ({ table }) => (
+            <Checkbox
+                checked={
+                    table.getIsAllPageRowsSelected() ||
+                    (table.getIsSomePageRowsSelected() && "indeterminate")
+                }
+                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                aria-label="Select all"
+            />
+        ),
+        cell: ({ row }) => (
+            <Checkbox
+                checked={row.getIsSelected()}
+                onCheckedChange={(value) => row.toggleSelected(!!value)}
+                aria-label="Select row"
+            />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+    },
     {
         accessorKey: "label",
         header: ({ column }) => (
@@ -60,9 +83,9 @@ export const columns: ColumnDef<Expense>[] = [
             return (
                 <div className="flex w-[100px] items-center">
                     {type === "income" ? (
-                        <TrendingUp size={20} className="mr-2 text-green-500" />
+                        <TrendingUp size={20} className="mr-2" />
                     ) : (
-                        <TrendingDown size={20} className="mr-2 text-red-500" />
+                        <TrendingDown size={20} className="mr-2" />
                     )}
                     <span className="capitalize"> {row.getValue("type")}</span>
                 </div>
@@ -84,7 +107,6 @@ export const columns: ColumnDef<Expense>[] = [
                     <span
                         className={cn(
                             "capitalize",
-                            type === "income" ? "text-green-500" : "text-red-500"
                         )}
                     >
                         {" "}
