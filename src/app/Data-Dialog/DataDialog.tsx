@@ -8,6 +8,9 @@ import DataLabel from "./_components/Data-Label";
 import DataNote from "./_components/Data-Note";
 import DataType from "./_components/Data-Type";
 import DataCategory from "./_components/Data-Category";
+import DataAmount from "./_components/Data-Amount";
+import { DatePickerDemo } from "./Data-DatePicker";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 export default function DataDialog() {
     return (
@@ -40,9 +43,17 @@ export default function DataDialog() {
                         <DataType />
                         <DataCategory />
                     </div>
+
+                    <div className="grid grid-cols-2 gap-5 w-full">
+                        <DataAmount />
+                        <DatePickerDemo />
+                    </div>
                 </div>
                 <DialogFooter>
-                    <Button type="submit">Save changes</Button>
+                    <DialogClose>
+                        <Button>Cancel</Button>
+                    </DialogClose>
+                    <Button type="submit">Submit</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
