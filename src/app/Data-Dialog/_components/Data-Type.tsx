@@ -10,7 +10,6 @@ export default function DataType({
     selectedTab: string,
     setSelectedTab: Dispatch<SetStateAction<ExpenseData["type"]>>
 }) {
-    // console.log(selectedTab)
     return (
         <div>
             <Label className="text-slate-600">Type</Label>

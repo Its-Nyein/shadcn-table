@@ -32,14 +32,12 @@ export default function DataDialog() {
         }
     })
 
-    const { reset, formState } = methods;
-    console.log(formState.errors)
+    const { reset } = methods;
 
     const [selectedTab, setSelectedTab] = useState<ExpenseData["type"]>("Income")
     const [selectedCategory, setSelectedCategory] = useState<ExpenseData["category"]>("income")
 
     const onSubmit = (data: Expense) => {
-        console.log("submit data", data)
 
         const newExpense: ExpenseData = {
             id: nanoid(),
@@ -51,7 +49,6 @@ export default function DataDialog() {
             date: data.date
         };
 
-        console.log("newExpense", newExpense)
     }
 
     const handleOnReset = () => {

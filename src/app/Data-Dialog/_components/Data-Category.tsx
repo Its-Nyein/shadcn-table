@@ -9,9 +9,7 @@ export default function DataCategory({
     selectedCategory: string,
     setSelectedCategory: Dispatch<SetStateAction<ExpenseData["category"]>>
 }) {
-    // console.log(selectedCategory)
     const [isClient, setIsClient] = useState(false)
-    // const [selectedCategory, setSelectedCategory] = useState("")
 
     const categories = [
         "income",
