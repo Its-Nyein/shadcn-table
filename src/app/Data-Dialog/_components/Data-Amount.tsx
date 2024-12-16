@@ -1,28 +1,47 @@
-"use client"
+"use client";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { NumericFormat } from 'react-number-format';
+import { useFormContext, Controller } from "react-hook-form";
+import { NumericFormat } from "react-number-format";
 
-export default function DataAmount() {
+export default function DataPrice() {
+    const { control, formState: { errors } } = useFormContext();
+    const errorMessage = errors.amount?.message;
+
     return (
         <div className="flex flex-col gap-2 mt-3">
-            <Label htmlFor="label" className="text-slate-600">
+            <Label htmlFor="amount" className="text-slate-600">
                 {`Amount`}
             </Label>
-            <NumericFormat
-                value={0}
-                className="h-"
-                customInput={Input}
-                thousandSeparator
-                placeholder="Amount"
+            <Controller
+                name="amount"
+                control={control}
+                render={({ field: { onChange, value, ref } }) => (
+                    <NumericFormat
+                        value={value}
+                        onValueChange={(values) => {
+                            onChange(values.floatValue);
+                        }}
+                        decimalScale={2}
+                        fixedDecimalScale
+                        allowNegative={false}
+                        thousandSeparator
+                        id="amount"
+                        customInput={Input}
+                        placeholder="Enter amount"
+                        getInputRef={ref}
+                    />
+                )}
             />
 
-            <div className="flex text-red-600 gap-1 items-center text-xs">
-                <InfoCircledIcon />
-                <p>The data name is required</p>
-            </div>
+            {errorMessage && typeof errorMessage === "string" && (
+                <div className="flex text-red-600 gap-1 items-center text-xs">
+                    <InfoCircledIcon />
+                    <p>{errorMessage}</p>
+                </div>
+            )}
         </div>
-    )
+    );
 }

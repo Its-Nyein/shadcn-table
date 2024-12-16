@@ -13,21 +13,30 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { Label } from "@/components/ui/label"
+import { useFormContext } from "react-hook-form"
 
 export function DatePickerDemo() {
-    const [date, setDate] = React.useState<Date>()
+    const { setValue, watch } = useFormContext()
+    const date = watch('date')
+
+    const handleSelect = (date: Date | undefined) => {
+        setValue('date', date, {
+            shouldValidate: true,
+            shouldDirty: true
+        })
+    }
 
     return (
         <div className="flex flex-col gap-2 mt-3">
             <Label htmlFor="label" className="text-slate-600">
                 {`Date`}
             </Label>
-            <Popover>
+            <Popover modal={true}>
                 <PopoverTrigger asChild>
                     <Button
                         variant={"outline"}
                         className={cn(
-                            "w-[240px] justify-start text-left font-normal",
+                            "w-[220px] justify-start text-left font-normal",
                             !date && "text-muted-foreground"
                         )}
                     >
@@ -39,7 +48,7 @@ export function DatePickerDemo() {
                     <Calendar
                         mode="single"
                         selected={date}
-                        onSelect={setDate}
+                        onSelect={handleSelect}
                         initialFocus
                     />
                 </PopoverContent>

@@ -1,11 +1,17 @@
+import { ExpenseData } from "@/app/Data-Table/columns";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-export default function DataCategory() {
-
+export default function DataCategory({
+    selectedCategory, setSelectedCategory
+}: {
+    selectedCategory: string,
+    setSelectedCategory: Dispatch<SetStateAction<ExpenseData["category"]>>
+}) {
+    // console.log(selectedCategory)
     const [isClient, setIsClient] = useState(false)
-    const [selectedCategory, setSelectedCategory] = useState("")
+    // const [selectedCategory, setSelectedCategory] = useState("")
 
     const categories = [
         "income",
@@ -22,7 +28,7 @@ export default function DataCategory() {
 
     useEffect(() => {
         setIsClient(true);
-        setSelectedCategory(categories[0])
+        setSelectedCategory("income")
     }, [])
 
     if (!isClient) return null;
@@ -31,7 +37,11 @@ export default function DataCategory() {
         <div className="flex flex-col gap-2 mt-[6px]">
             <Label className="text-slate-600">{`Category`}</Label>
 
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <Select
+                value={selectedCategory}
+                onValueChange={(value: any) => {
+                    setSelectedCategory(value as ExpenseData["category"])
+                }}>
                 <SelectTrigger className="shadow-none">
                     <SelectValue placeholder="Select category" />
                 </SelectTrigger>

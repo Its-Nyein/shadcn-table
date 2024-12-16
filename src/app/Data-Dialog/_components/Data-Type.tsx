@@ -1,14 +1,25 @@
+import { ExpenseData } from "@/app/Data-Table/columns";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TrendingUp, TrendingDown } from "lucide-react";
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
-export default function DataType() {
-    const [selectedTab, setSelectedTab] = useState("Income")
+export default function DataType({
+    selectedTab, setSelectedTab
+}: {
+    selectedTab: string,
+    setSelectedTab: Dispatch<SetStateAction<ExpenseData["type"]>>
+}) {
+    // console.log(selectedTab)
     return (
         <div>
             <Label className="text-slate-600">Type</Label>
-            <Tabs value={selectedTab} onValueChange={setSelectedTab} className="mt-1">
+            <Tabs
+                value={selectedTab}
+                onValueChange={(value: any) => {
+                    setSelectedTab(value as ExpenseData["type"])
+                }}
+                className="mt-1">
                 <TabsList>
                     <TabsTrigger
                         className="h-8 gap-1"

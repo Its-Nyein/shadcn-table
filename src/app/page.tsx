@@ -5,7 +5,6 @@ import { DataTable } from "./Data-Table/data-table";
 import fs from "fs";
 import path from "path";
 import { columns } from "./Data-Table/columns"
-import { CardContent } from "@/components/ui/card";
 
 export const metadata: Metadata = {
   title: {

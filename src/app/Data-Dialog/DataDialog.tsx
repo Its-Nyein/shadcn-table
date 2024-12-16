@@ -11,8 +11,53 @@ import DataCategory from "./_components/Data-Category";
 import DataAmount from "./_components/Data-Amount";
 import { DatePickerDemo } from "./Data-DatePicker";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { expenseSchema } from "@/schema/schema";
+import { Expense } from "@/schema/schema";
+import { FormProvider, useForm } from 'react-hook-form'
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useState } from "react";
+import { ExpenseData } from "../Data-Table/columns";
+import { nanoid } from 'nanoid'
 
 export default function DataDialog() {
+    const methods = useForm<Expense>({
+        resolver: zodResolver(expenseSchema),
+        defaultValues: {
+            label: "",
+            note: "",
+            amount: 0.0,
+            date: new Date(),
+            category: "income",
+            type: "Income"
+        }
+    })
+
+    const { reset, formState } = methods;
+    console.log(formState.errors)
+
+    const [selectedTab, setSelectedTab] = useState<ExpenseData["type"]>("Income")
+    const [selectedCategory, setSelectedCategory] = useState<ExpenseData["category"]>("income")
+
+    const onSubmit = (data: Expense) => {
+        console.log("submit data", data)
+
+        const newExpense: ExpenseData = {
+            id: nanoid(),
+            label: data.label,
+            note: data.note,
+            category: selectedCategory,
+            type: selectedTab,
+            amount: data.amount,
+            date: data.date
+        };
+
+        console.log("newExpense", newExpense)
+    }
+
+    const handleOnReset = () => {
+        reset();
+    }
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -33,28 +78,38 @@ export default function DataDialog() {
                     </DialogDescription>
                 </DialogHeader>
                 <Separator />
-                <div className="flex flex-col gap-2 mt-1 items-center">
-                    <div className="grid grid-cols-2 gap-5">
-                        <DataLabel />
-                        <DataNote />
-                    </div>
+                <FormProvider {...methods}>
+                    <form onSubmit={methods.handleSubmit(onSubmit)}>
+                        <div className="flex flex-col gap-2 mt-1 items-center">
+                            <div className="grid grid-cols-2 gap-5">
+                                <DataLabel />
+                                <DataNote />
+                            </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
-                        <DataType />
-                        <DataCategory />
-                    </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+                                <DataType
+                                    selectedTab={selectedTab}
+                                    setSelectedTab={setSelectedTab}
+                                />
+                                <DataCategory
+                                    selectedCategory={selectedCategory}
+                                    setSelectedCategory={setSelectedCategory}
+                                />
+                            </div>
 
-                    <div className="grid grid-cols-2 gap-5 w-full">
-                        <DataAmount />
-                        <DatePickerDemo />
-                    </div>
-                </div>
-                <DialogFooter>
-                    <DialogClose>
-                        <Button>Cancel</Button>
-                    </DialogClose>
-                    <Button type="submit">Submit</Button>
-                </DialogFooter>
+                            <div className="grid grid-cols-2 gap-5">
+                                <DataAmount />
+                                <DatePickerDemo />
+                            </div>
+                        </div>
+                        <DialogFooter className="mt-4">
+                            <DialogClose asChild onClick={handleOnReset}>
+                                <Button>Cancel</Button>
+                            </DialogClose>
+                            <Button type="submit">Submit</Button>
+                        </DialogFooter>
+                    </form>
+                </FormProvider>
             </DialogContent>
         </Dialog>
     )

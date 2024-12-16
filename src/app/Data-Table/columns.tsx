@@ -8,6 +8,26 @@ import { TrendingUp, TrendingDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 
+export type ExpenseData = {
+    id: string;
+    label: string;
+    note: string;
+    category: |
+    "income" |
+    "food" |
+    "utilities" |
+    "housing" |
+    "health" |
+    "transport" |
+    "work" |
+    "entertainment" |
+    "education" |
+    "gifts";
+    type: "Income" | "Expense";
+    amount: number;
+    date: Date
+}
+
 export const columns: ColumnDef<Expense>[] = [
     {
         id: "select",
