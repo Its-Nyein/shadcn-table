@@ -1,9 +1,7 @@
 import { Metadata } from "next";
 import Header from "./AppHeader/Header";
 import { siteConfig } from "@/config/config";
-import { DataTable } from "./Data-Table/data-table";
-import { columns } from "./Data-Table/columns"
-import { data } from "@/data/data";
+import AppTable from "./Data-Table/AppTable";
 
 export const metadata: Metadata = {
   title: {
@@ -23,7 +21,7 @@ export default async function Home() {
           Here&apos;s a list of your expenses for this month!
         </p>
       </div>
-      <DataTable data={data} columns={columns} />
+      <AppTable />
     </div>
   );
 }
