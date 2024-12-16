@@ -23,7 +23,7 @@ export type ExpenseData = {
     "entertainment" |
     "education" |
     "gifts";
-    type: "Income" | "Expense";
+    type: "income" | "expense";
     amount: number;
     date: Date
 }

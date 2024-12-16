@@ -6,7 +6,7 @@ export const expenseSchema = z.object({
   label: z.string().min(1, "Label is required").max(20, "Label must be 20 characters or less"),
   note: z.string().min(1, "Note is required").max(25, "Note must be 25 characters or less"),
   category: z.string(),
-  type: z.enum(["Income", "expense"]),
+  type: z.string(),
   amount: z
     .number({
       required_error: "Amount is required",

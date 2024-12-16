@@ -2,9 +2,8 @@ import { Metadata } from "next";
 import Header from "./AppHeader/Header";
 import { siteConfig } from "@/config/config";
 import { DataTable } from "./Data-Table/data-table";
-import fs from "fs";
-import path from "path";
 import { columns } from "./Data-Table/columns"
+import { data } from "@/data/data";
 
 export const metadata: Metadata = {
   title: {
@@ -14,19 +13,8 @@ export const metadata: Metadata = {
   description: siteConfig.description,
 }
 
-async function getData() {
-  const filePath = path.join(
-    process.cwd(),
-    "src/data",
-    "data.json"
-  );
-  const data = fs.readFileSync(filePath, "utf8");
-  return JSON.parse(data);
-}
-
 
 export default async function Home() {
-  const data = await getData();
   return (
     <div className="h-full flex-1 flex-col space-y-2 pt-8 px-8 md:px-32 md:flex">
       <Header />
