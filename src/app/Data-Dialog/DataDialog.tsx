@@ -9,7 +9,7 @@ import DataNote from "./_components/Data-Note";
 import DataType from "./_components/Data-Type";
 import DataCategory from "./_components/Data-Category";
 import DataAmount from "./_components/Data-Amount";
-import { DatePickerDemo } from "./Data-DatePicker";
+import { DatePickerDemo } from "./_components/Data-DatePicker";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { expenseSchema } from "@/schema/schema";
 import { Expense } from "@/schema/schema";
@@ -34,7 +34,7 @@ export default function DataDialog() {
 
     const { reset } = methods;
 
-    const [selectedTab, setSelectedTab] = useState<ExpenseData["type"]>("Income")
+    const [selectedTab, setSelectedTab] = useState<ExpenseData["type"]>("income")
     const [selectedCategory, setSelectedCategory] = useState<ExpenseData["category"]>("income")
 
     const onSubmit = (data: Expense) => {
