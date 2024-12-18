@@ -22,16 +22,16 @@ export default function DataType({
                 <TabsList>
                     <TabsTrigger
                         className="h-8 gap-1"
-                        value="Income"
+                        value="income"
                     >
                         <TrendingUp size={20} />
                         Income
                     </TabsTrigger>
                     <TabsTrigger
                         className="h-8 gap-1"
-                        value="Expense"
+                        value="expense"
                     >
-                        <TrendingDown size={20} />
+                        <TrendingDown size={25} />
                         Expense
                     </TabsTrigger>
                 </TabsList>

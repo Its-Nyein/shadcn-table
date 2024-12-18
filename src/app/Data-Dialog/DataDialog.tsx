@@ -15,11 +15,19 @@ import { expenseSchema } from "@/schema/schema";
 import { Expense } from "@/schema/schema";
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ExpenseData } from "../Data-Table/columns";
 import { nanoid } from 'nanoid'
+import { useExpenseStore } from "@/store/store";
+import { useToast } from "@/hooks/use-toast";
+import LoadingSpinner from "@/UI/LoadingSpinner";
 
 export default function DataDialog() {
+
+    const {addExpense, isLoading} = useExpenseStore();
+    const {toast} = useToast();
+    const dialogCloseRef = useRef<HTMLButtonElement | null>(null)
+
     const methods = useForm<Expense>({
         resolver: zodResolver(expenseSchema),
         defaultValues: {
@@ -28,7 +36,7 @@ export default function DataDialog() {
             amount: 0.0,
             date: new Date(),
             category: "income",
-            type: "Income"
+            type: "income"
         }
     })
 
@@ -37,7 +45,7 @@ export default function DataDialog() {
     const [selectedTab, setSelectedTab] = useState<ExpenseData["type"]>("income")
     const [selectedCategory, setSelectedCategory] = useState<ExpenseData["category"]>("income")
 
-    const onSubmit = (data: Expense) => {
+    const onSubmit = async (data: Expense) => {
 
         const newExpense: ExpenseData = {
             id: nanoid(),
@@ -49,10 +57,23 @@ export default function DataDialog() {
             date: data.date
         };
 
+        const result = await addExpense(newExpense);
+
+        if(result) {
+            toast({
+                title: "Success",
+                description: "New expense added successfully"
+            }),
+            dialogCloseRef.current?.click();
+        }
     }
 
     const handleOnReset = () => {
         reset();
+    }
+
+    {
+        isLoading && <LoadingSpinner/>
     }
 
     return (
@@ -84,13 +105,13 @@ export default function DataDialog() {
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
-                                <DataType
-                                    selectedTab={selectedTab}
-                                    setSelectedTab={setSelectedTab}
-                                />
                                 <DataCategory
                                     selectedCategory={selectedCategory}
                                     setSelectedCategory={setSelectedCategory}
+                                />
+                                <DataType
+                                    selectedTab={selectedTab}
+                                    setSelectedTab={setSelectedTab}
                                 />
                             </div>
 
@@ -100,7 +121,11 @@ export default function DataDialog() {
                             </div>
                         </div>
                         <DialogFooter className="mt-4">
-                            <DialogClose asChild onClick={handleOnReset}>
+                            <DialogClose 
+                                asChild 
+                                onClick={handleOnReset}
+                                ref={dialogCloseRef}
+                                >
                                 <Button>Cancel</Button>
                             </DialogClose>
                             <Button type="submit">Submit</Button>
