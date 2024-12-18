@@ -26,7 +26,7 @@ export function DataTableRowActions({row}: {row: Row<ExpenseData>}) {
     }
 
     return (
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
                 <Button
                     variant="ghost"
