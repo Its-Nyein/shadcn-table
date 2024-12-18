@@ -72,10 +72,6 @@ export default function DataDialog() {
         reset();
     }
 
-    {
-        isLoading && <LoadingSpinner/>
-    }
-
     return (
         <Dialog>
             <DialogTrigger asChild>

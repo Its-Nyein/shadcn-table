@@ -26,7 +26,7 @@ export const useExpenseStore = create<expenseState>((set) => ({
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      set((state) => ({allExpense: [...state.allExpense, expense]}));
+      set((state) => ({allExpense: [expense, ...state.allExpense]}));
       return {success: true}
     } finally {
       set({isLoading: false})
