@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Header from "./AppHeader/Header";
 import { siteConfig } from "@/config/config";
 import AppTable from "./Data-Table/AppTable";
+import { AlertDialogDemo } from "./Data-Dialog/DeleteDialog";
 
 export const metadata: Metadata = {
   title: {
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
 export default async function Home() {
   return (
     <div className="h-full flex-1 flex-col space-y-2 pt-8 px-8 md:px-32 md:flex">
+      <AlertDialogDemo/>
       <Header />
       <div className="flex items-center justify-between">
         <p className="text-muted-foreground">

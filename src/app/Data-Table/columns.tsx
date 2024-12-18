@@ -1,7 +1,6 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Expense } from "../../schema/schema";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { TrendingUp, TrendingDown } from "lucide-react";
@@ -28,7 +27,7 @@ export type ExpenseData = {
     date: Date
 }
 
-export const columns: ColumnDef<Expense>[] = [
+export const columns: ColumnDef<ExpenseData>[] = [
     {
         id: "select",
         header: ({ table }) => (

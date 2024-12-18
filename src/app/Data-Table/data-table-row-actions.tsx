@@ -8,24 +8,22 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuRadioGroup,
-    DropdownMenuRadioItem,
     DropdownMenuSeparator,
     DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import { useExpenseStore } from "@/store/store";
+import { ExpenseData } from "./columns";
 
-interface DataTableRowActionsProps<TData> {
-    row: Row<TData>;
-}
+export function DataTableRowActions({row}: {row: Row<ExpenseData>}) {
 
-export function DataTableRowActions<TData>({
-    row
-}: DataTableRowActionsProps<TData>) {
+    const {setSelectedDelExpense, setOpenAlertDialog} = useExpenseStore();
     // const task = taskSchema.parse(row.original);
+
+    const handleOnDelete = () => {
+        setOpenAlertDialog(true);
+        setSelectedDelExpense(row.original)
+    }
 
     return (
         <DropdownMenu>
@@ -41,9 +39,10 @@ export function DataTableRowActions<TData>({
             <DropdownMenuContent align="end" className="w-[160px]">
                 <DropdownMenuItem>Edit</DropdownMenuItem>
                 <DropdownMenuItem>Make a copy</DropdownMenuItem>
-                <DropdownMenuItem>Favorite</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem
+                    onClick={() => handleOnDelete()}
+                >
                     Delete
                     <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
                 </DropdownMenuItem>
