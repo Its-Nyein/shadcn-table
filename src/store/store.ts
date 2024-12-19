@@ -11,8 +11,8 @@ interface expenseState {
     addExpense: (expense: ExpenseData) => Promise<{success: boolean}>;
     openAlertDialog: boolean;
     setOpenAlertDialog: (openAlertDialog: boolean) => void;
-    selectedDelExpense: ExpenseData | null;
-    setSelectedDelExpense: (expense: ExpenseData | null) => void;
+    selectedExpense: ExpenseData | null;
+    setSelectedExpense: (expense: ExpenseData | null) => void;
     deleteExpense: (id: string) => Promise<{success: boolean}>;
     openUpdateDialog: boolean;
     setOpenUpdateDialog: (openUpdateDialog: boolean) => void;
@@ -23,7 +23,7 @@ export const useExpenseStore = create<expenseState>((set) => ({
   allExpense: [],
   isLoading: false,
   openAlertDialog: false,
-  selectedDelExpense: null,
+  selectedExpense: null,
   openUpdateDialog: false,
   setOpenUpdateDialog: (openUpdateDialog) => {
     set({openUpdateDialog: openUpdateDialog})
@@ -31,8 +31,8 @@ export const useExpenseStore = create<expenseState>((set) => ({
   setOpenAlertDialog: (openAlertDialog) => {
     set({openAlertDialog: openAlertDialog})
   },
-  setSelectedDelExpense: (expense: ExpenseData | null) => {
-    set({selectedDelExpense: expense})
+  setSelectedExpense: (expense: ExpenseData | null) => {
+    set({selectedExpense: expense})
   },
   setAllExpense: (allExpense) => {
     set({ allExpense: allExpense})
@@ -57,18 +57,14 @@ export const useExpenseStore = create<expenseState>((set) => ({
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000))
-      set((state) => {
-        const updatedExpenses = state.allExpense.map((expense) =>
-            expense.id === updatedExpense.id ? updatedExpense : expense
-        );
-        console.log("Updated Expenses:", updatedExpenses); // Log the updated list of expenses
-        return { allExpense: updatedExpenses };
-    });
+      set((state) => ({
+        allExpense: state.allExpense.map((expense) => expense.id === updatedExpense.id ? updatedExpense : expense)
+      }))
       return {success: true}
     } finally {
       set({isLoading: false});
       set({openUpdateDialog: false});
-      set({selectedDelExpense: null})
+      set({selectedExpense: null})
     }
   },
   deleteExpense: async (id: string) => {
@@ -83,7 +79,7 @@ export const useExpenseStore = create<expenseState>((set) => ({
       } finally {
         set({isLoading: false});
         set({openAlertDialog: false});
-        set({selectedDelExpense: null})
+        set({selectedExpense: null})
       }
   },
 }))

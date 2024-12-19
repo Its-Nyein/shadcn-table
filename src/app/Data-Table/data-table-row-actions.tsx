@@ -17,17 +17,17 @@ import { ExpenseData } from "./columns";
 
 export function DataTableRowActions({row}: {row: Row<ExpenseData>}) {
 
-    const {setSelectedDelExpense, setOpenAlertDialog, setOpenUpdateDialog} = useExpenseStore();
+    const {setSelectedExpense, setOpenAlertDialog, setOpenUpdateDialog} = useExpenseStore();
     // const task = taskSchema.parse(row.original);
 
     const handleOnDelete = () => {
         setOpenAlertDialog(true);
-        setSelectedDelExpense(row.original)
+        setSelectedExpense(row.original)
     }
 
     const handleOnEdit = () => {
         setOpenUpdateDialog(true)
-        setSelectedDelExpense(row.original)
+        setSelectedExpense(row.original)
     }
 
     return (

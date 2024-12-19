@@ -23,8 +23,8 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function DataDialog() {
 
-    const {addExpense, isLoading, openUpdateDialog, setOpenUpdateDialog, updateExpense, selectedDelExpense, 
-        setSelectedDelExpense} = useExpenseStore();
+    const {addExpense, isLoading, openUpdateDialog, setOpenUpdateDialog, updateExpense, selectedExpense, 
+        setSelectedExpense} = useExpenseStore();
     const {toast} = useToast();
     const dialogCloseRef = useRef<HTMLButtonElement | null>(null)
 
@@ -40,22 +40,20 @@ export default function DataDialog() {
         }
     })
 
-    const { reset, formState } = methods;
-    console.log("formstate", formState.errors)
+    const { reset } = methods;
 
     useEffect(() => {
-        console.log("selectedDelExpense", selectedDelExpense)
-        if(selectedDelExpense) {
+        if(selectedExpense) {
             reset({
-                label: selectedDelExpense.label,
-                note: selectedDelExpense.note,
-                amount: selectedDelExpense.amount,
-                date: selectedDelExpense.date,
-                type: selectedDelExpense.type,
-                category: selectedDelExpense.category
+                label: selectedExpense.label,
+                note: selectedExpense.note,
+                amount: selectedExpense.amount,
+                date: selectedExpense.date,
+                type: selectedExpense.type,
+                category: selectedExpense.category
             });
-            setSelectedTab(selectedDelExpense.type);
-            setSelectedCategory(selectedDelExpense.category)
+            setSelectedTab(selectedExpense.type);
+            setSelectedCategory(selectedExpense.category)
         } else {
             reset({
                 label: "",
@@ -68,15 +66,14 @@ export default function DataDialog() {
             setSelectedTab("income");
             setSelectedCategory("income");
         }
-    }, [selectedDelExpense, openUpdateDialog, reset])
+    }, [selectedExpense, openUpdateDialog, reset])
 
     const [selectedTab, setSelectedTab] = useState<ExpenseData["type"]>("income")
     const [selectedCategory, setSelectedCategory] = useState<ExpenseData["category"]>("income")
 
     const onSubmit = async (data: Expense) => {
 
-        if(!selectedDelExpense) {
-            console.log("Submit for New")
+        if(!selectedExpense) {
             const newExpense: ExpenseData = {
                 id: nanoid(),
                 label: data.label,
@@ -98,7 +95,7 @@ export default function DataDialog() {
             }
         } else {
             const updateExp: ExpenseData = {
-                id: selectedDelExpense.id,
+                id: selectedExpense.id,
                 label: data.label,
                 note: data.note,
                 category: selectedCategory,
@@ -112,7 +109,7 @@ export default function DataDialog() {
             if(result.success) {
                 toast({
                     title: "Success",
-                    description: `${selectedDelExpense.label} has been updated successfully`
+                    description: `${selectedExpense.label} has been updated successfully`
                 })
             } else {
                 toast({
@@ -126,7 +123,7 @@ export default function DataDialog() {
 
     const handleOnReset = () => {
         reset();
-        setSelectedDelExpense(null)
+        setSelectedExpense(null)
     }
 
     return (
@@ -143,9 +140,9 @@ export default function DataDialog() {
             </DialogTrigger>
             <DialogContent className="[&>button]:hidden p-7 px-8">
                 <DialogHeader>
-                    <DialogTitle className="text-xl">{selectedDelExpense ? "Update expense data": "Add expense data"}</DialogTitle>
+                    <DialogTitle className="text-xl">{selectedExpense ? "Update expense data": "Add expense data"}</DialogTitle>
                     <DialogDescription>
-                        {selectedDelExpense ? "Fill the form to update expense data" : "Fill the form to add new data"}
+                        {selectedExpense ? "Fill the form to update expense data" : "Fill the form to add new data"}
                     </DialogDescription>
                 </DialogHeader>
                 <Separator />
@@ -181,7 +178,7 @@ export default function DataDialog() {
                                 >
                                 <Button>Cancel</Button>
                             </DialogClose>
-                            <Button type="submit">Submit</Button>
+                            <Button type="submit">{isLoading ? "Submitting" : "Submit"}</Button>
                         </DialogFooter>
                     </form>
                 </FormProvider>
