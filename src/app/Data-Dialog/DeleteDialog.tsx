@@ -15,25 +15,25 @@ import { useExpenseStore } from "@/store/store"
 
 export function AlertDialogDemo() {
   
-  const { isLoading ,openAlertDialog, setOpenAlertDialog, selectedDelExpense, setSelectedDelExpense, deleteExpense} = useExpenseStore();
+  const { isLoading ,openAlertDialog, setOpenAlertDialog, selectedExpense, setSelectedExpense, deleteExpense} = useExpenseStore();
   const {toast} = useToast();
 
   async function deleteExpenseFx() {
-    if(selectedDelExpense) {
-      const result = await deleteExpense(selectedDelExpense.id);
+    if(selectedExpense) {
+      const result = await deleteExpense(selectedExpense.id);
       if(result) {
         toast({
           title: "Expense Deleted",
-          description: `${selectedDelExpense.label} has been delected successfully`
+          description: `${selectedExpense.label} has been delected successfully`
         })
       }
-      setSelectedDelExpense(null);
+      setSelectedExpense(null);
       setOpenAlertDialog(false)
     }
   }
 
   const handleOnCancel = () => {
-    setSelectedDelExpense(null);
+    setSelectedExpense(null);
     setOpenAlertDialog(false);
   };
 

@@ -7,9 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { incomeType, categories } from "./data";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import { useState } from "react";
 import { DataTableViewOptions } from "./data-table-view-options";
-import { TrashIcon } from "lucide-react";
+import { CheckCheck } from "lucide-react";
 import DataDialog from "../Data-Dialog/DataDialog";
 
 interface DataTableToolbarProps<TData> {
@@ -62,8 +61,8 @@ export function DataTableToolbar<TData>({
             <div className="flex items-center gap-2">
                 {table.getFilteredSelectedRowModel().rows.length > 0 ? (
                     <Button variant="outline" size="sm">
-                        <TrashIcon className="mr-2 size-4" aria-hidden="true" />
-                        Delete ({table.getFilteredSelectedRowModel().rows.length})
+                        <CheckCheck className="mr-2 size-4" aria-hidden="true" />
+                        Select ({table.getFilteredSelectedRowModel().rows.length})
                     </Button>
                 ) : null}
                 <DataTableViewOptions table={table} />
