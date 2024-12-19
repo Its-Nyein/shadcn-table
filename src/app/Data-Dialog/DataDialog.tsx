@@ -141,7 +141,7 @@ export default function DataDialog() {
                     Add New
                 </Button>
             </DialogTrigger>
-            <DialogContent className="p-7 px-8">
+            <DialogContent className="[&>button]:hidden p-7 px-8">
                 <DialogHeader>
                     <DialogTitle className="text-xl">{selectedDelExpense ? "Update expense data": "Add expense data"}</DialogTitle>
                     <DialogDescription>
