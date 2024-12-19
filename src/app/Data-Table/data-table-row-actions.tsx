@@ -14,10 +14,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useExpenseStore } from "@/store/store";
 import { ExpenseData } from "./columns";
+import { nanoid } from "nanoid";
+import { toast } from "@/hooks/use-toast";
 
 export function DataTableRowActions({row}: {row: Row<ExpenseData>}) {
 
-    const {setSelectedExpense, setOpenAlertDialog, setOpenUpdateDialog} = useExpenseStore();
+    const {setSelectedExpense, setOpenAlertDialog, setOpenUpdateDialog, addExpense} = useExpenseStore();
     // const task = taskSchema.parse(row.original);
 
     const handleOnDelete = () => {
@@ -28,6 +30,25 @@ export function DataTableRowActions({row}: {row: Row<ExpenseData>}) {
     const handleOnEdit = () => {
         setOpenUpdateDialog(true)
         setSelectedExpense(row.original)
+    }
+
+    async function handleOnCopy() {
+        
+        const copyExpense: ExpenseData = {
+            ...row.original,
+            id: nanoid(),
+            label: `${row.original.label} (copy)`,
+            date: new Date()
+        }
+
+        const result = await addExpense(copyExpense)
+
+        if(result) {
+            toast({
+                title: "Copied successfully",
+                description: "Expense has been copied successfully"
+            })
+        }
     }
 
     return (
@@ -45,7 +66,9 @@ export function DataTableRowActions({row}: {row: Row<ExpenseData>}) {
                 <DropdownMenuItem
                     onClick={() => handleOnEdit()}
                 >Edit</DropdownMenuItem>
-                <DropdownMenuItem>Make a copy</DropdownMenuItem>
+                <DropdownMenuItem
+                    onClick={() => handleOnCopy()}
+                >Make a copy</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                     onClick={() => handleOnDelete()}
