@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   return (
-    <div className="h-full flex-1 flex-col space-y-2 pt-8 px-8 md:px-32 md:flex">
+    <div className="h-full flex-1 flex-col space-y-2 pt-8 px-8 md:px-32 md:flex mb-5">
       <AlertDialogDemo/>
       <Header />
       <div className="flex items-center justify-between">
