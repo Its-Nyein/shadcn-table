@@ -15,16 +15,16 @@ import { expenseSchema } from "@/schema/schema";
 import { Expense } from "@/schema/schema";
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ExpenseData } from "../Data-Table/columns";
 import { nanoid } from 'nanoid'
 import { useExpenseStore } from "@/store/store";
 import { useToast } from "@/hooks/use-toast";
-import LoadingSpinner from "@/UI/LoadingSpinner";
 
 export default function DataDialog() {
 
-    const {addExpense, isLoading} = useExpenseStore();
+    const {addExpense, isLoading, openUpdateDialog, setOpenUpdateDialog, updateExpense, selectedDelExpense, 
+        setSelectedDelExpense} = useExpenseStore();
     const {toast} = useToast();
     const dialogCloseRef = useRef<HTMLButtonElement | null>(null)
 
@@ -40,40 +40,97 @@ export default function DataDialog() {
         }
     })
 
-    const { reset } = methods;
+    const { reset, formState } = methods;
+    console.log("formstate", formState.errors)
+
+    useEffect(() => {
+        console.log("selectedDelExpense", selectedDelExpense)
+        if(selectedDelExpense) {
+            reset({
+                label: selectedDelExpense.label,
+                note: selectedDelExpense.note,
+                amount: selectedDelExpense.amount,
+                date: selectedDelExpense.date,
+                type: selectedDelExpense.type,
+                category: selectedDelExpense.category
+            });
+            setSelectedTab(selectedDelExpense.type);
+            setSelectedCategory(selectedDelExpense.category)
+        } else {
+            reset({
+                label: "",
+                note: "",
+                amount: 0.0,
+                date: new Date(),
+                type: "income",
+                category: "income"
+            });
+            setSelectedTab("income");
+            setSelectedCategory("income");
+        }
+    }, [selectedDelExpense, openUpdateDialog, reset])
 
     const [selectedTab, setSelectedTab] = useState<ExpenseData["type"]>("income")
     const [selectedCategory, setSelectedCategory] = useState<ExpenseData["category"]>("income")
 
     const onSubmit = async (data: Expense) => {
 
-        const newExpense: ExpenseData = {
-            id: nanoid(),
-            label: data.label,
-            note: data.note,
-            category: selectedCategory,
-            type: selectedTab,
-            amount: data.amount,
-            date: data.date
-        };
+        if(!selectedDelExpense) {
+            console.log("Submit for New")
+            const newExpense: ExpenseData = {
+                id: nanoid(),
+                label: data.label,
+                note: data.note,
+                category: selectedCategory,
+                type: selectedTab,
+                amount: data.amount,
+                date: data.date
+            };
 
-        const result = await addExpense(newExpense);
+            const result = await addExpense(newExpense);
+    
+            if(result) {
+                toast({
+                    title: "Success",
+                    description: "New expense added successfully"
+                }),
+                dialogCloseRef.current?.click();
+            }
+        } else {
+            const updateExp: ExpenseData = {
+                id: selectedDelExpense.id,
+                label: data.label,
+                note: data.note,
+                category: selectedCategory,
+                type: selectedTab,
+                amount: data.amount,
+                date: data.date
+            }
 
-        if(result) {
-            toast({
-                title: "Success",
-                description: "New expense added successfully"
-            }),
-            dialogCloseRef.current?.click();
+            const result = await updateExpense(updateExp);
+
+            if(result.success) {
+                toast({
+                    title: "Success",
+                    description: `${selectedDelExpense.label} has been updated successfully`
+                })
+            } else {
+                toast({
+                    title: "Error",
+                    description: "Something went wrong"
+                })
+            }
         }
+
     }
 
     const handleOnReset = () => {
         reset();
+        setSelectedDelExpense(null)
     }
 
     return (
-        <Dialog>
+        <Dialog open={openUpdateDialog} onOpenChange={setOpenUpdateDialog}>
             <DialogTrigger asChild>
                 <Button
                     variant="outline"
@@ -86,9 +143,9 @@ export default function DataDialog() {
             </DialogTrigger>
             <DialogContent className="p-7 px-8">
                 <DialogHeader>
-                    <DialogTitle className="text-xl">Add New Data</DialogTitle>
+                    <DialogTitle className="text-xl">{selectedDelExpense ? "Update expense data": "Add expense data"}</DialogTitle>
                     <DialogDescription>
-                        Fill the form to add new data
+                        {selectedDelExpense ? "Fill the form to update expense data" : "Fill the form to add new data"}
                     </DialogDescription>
                 </DialogHeader>
                 <Separator />

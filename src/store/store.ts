@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { ExpenseData } from '@/app/Data-Table/columns'
 import { data } from '@/data/data'
+import { resolve } from 'path';
 
 interface expenseState {
     allExpense: ExpenseData[];
@@ -13,6 +14,9 @@ interface expenseState {
     selectedDelExpense: ExpenseData | null;
     setSelectedDelExpense: (expense: ExpenseData | null) => void;
     deleteExpense: (id: string) => Promise<{success: boolean}>;
+    openUpdateDialog: boolean;
+    setOpenUpdateDialog: (openUpdateDialog: boolean) => void;
+    updateExpense: (updatedExpense: ExpenseData) => Promise<{success: boolean}>;
 }
 
 export const useExpenseStore = create<expenseState>((set) => ({
@@ -20,6 +24,10 @@ export const useExpenseStore = create<expenseState>((set) => ({
   isLoading: false,
   openAlertDialog: false,
   selectedDelExpense: null,
+  openUpdateDialog: false,
+  setOpenUpdateDialog: (openUpdateDialog) => {
+    set({openUpdateDialog: openUpdateDialog})
+  },
   setOpenAlertDialog: (openAlertDialog) => {
     set({openAlertDialog: openAlertDialog})
   },
@@ -42,6 +50,25 @@ export const useExpenseStore = create<expenseState>((set) => ({
       return {success: true}
     } finally {
       set({isLoading: false})
+    }
+  },
+  updateExpense: async (updatedExpense: ExpenseData) => {
+    set({isLoading: true})
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      set((state) => {
+        const updatedExpenses = state.allExpense.map((expense) =>
+            expense.id === updatedExpense.id ? updatedExpense : expense
+        );
+        console.log("Updated Expenses:", updatedExpenses); // Log the updated list of expenses
+        return { allExpense: updatedExpenses };
+    });
+      return {success: true}
+    } finally {
+      set({isLoading: false});
+      set({openUpdateDialog: false});
+      set({selectedDelExpense: null})
     }
   },
   deleteExpense: async (id: string) => {

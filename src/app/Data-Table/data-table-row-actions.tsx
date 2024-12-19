@@ -17,11 +17,16 @@ import { ExpenseData } from "./columns";
 
 export function DataTableRowActions({row}: {row: Row<ExpenseData>}) {
 
-    const {setSelectedDelExpense, setOpenAlertDialog} = useExpenseStore();
+    const {setSelectedDelExpense, setOpenAlertDialog, setOpenUpdateDialog} = useExpenseStore();
     // const task = taskSchema.parse(row.original);
 
     const handleOnDelete = () => {
         setOpenAlertDialog(true);
+        setSelectedDelExpense(row.original)
+    }
+
+    const handleOnEdit = () => {
+        setOpenUpdateDialog(true)
         setSelectedDelExpense(row.original)
     }
 
@@ -37,7 +42,9 @@ export function DataTableRowActions({row}: {row: Row<ExpenseData>}) {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
-                <DropdownMenuItem>Edit</DropdownMenuItem>
+                <DropdownMenuItem
+                    onClick={() => handleOnEdit()}
+                >Edit</DropdownMenuItem>
                 <DropdownMenuItem>Make a copy</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
