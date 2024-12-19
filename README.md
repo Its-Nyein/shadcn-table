@@ -1,3 +1,19 @@
+# Yaycha - Shadcn View Table
+
+A data table component with server side rendering, pagination, sorting, filtering and custom view.
+
+<img width="1440" alt="Screenshot 2024-08-28 at 1 03 58 AM" src="https://github.com/user-attachments/assets/9f226a98-f4ba-49cb-bd98-6daacb5119cd">
+
+## Tech Stack
+
+- Next.js
+- TailwindCSS
+- shadcn/ui
+- tanstack/react-table
+- react-hook-form
+- zustand
+- zod
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
