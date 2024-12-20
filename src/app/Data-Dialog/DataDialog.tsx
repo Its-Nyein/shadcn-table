@@ -148,13 +148,10 @@ export default function DataDialog() {
                 <Separator />
                 <FormProvider {...methods}>
                     <form onSubmit={methods.handleSubmit(onSubmit)}>
-                        <div className="flex flex-col gap-2 mt-1 items-center">
-                            <div className="grid grid-cols-2 gap-5">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-1 items-center">
                                 <DataLabel />
                                 <DataNote />
-                            </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
                                 <DataCategory
                                     selectedCategory={selectedCategory}
                                     setSelectedCategory={setSelectedCategory}
@@ -163,14 +160,11 @@ export default function DataDialog() {
                                     selectedTab={selectedTab}
                                     setSelectedTab={setSelectedTab}
                                 />
-                            </div>
 
-                            <div className="grid grid-cols-2 gap-5">
                                 <DataAmount />
                                 <DatePickerDemo />
-                            </div>
                         </div>
-                        <DialogFooter className="mt-4">
+                        <DialogFooter className="flex flex-col md:flex-row mt-4 gap-2">
                             <DialogClose 
                                 asChild 
                                 onClick={handleOnReset}

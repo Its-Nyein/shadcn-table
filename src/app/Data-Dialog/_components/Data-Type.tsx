@@ -24,7 +24,7 @@ export default function DataType({
                         className="h-8 gap-1"
                         value="income"
                     >
-                        <TrendingUp size={20} />
+                        <TrendingUp size={25} />
                         Income
                     </TabsTrigger>
                     <TabsTrigger
