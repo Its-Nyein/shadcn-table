@@ -26,11 +26,10 @@
   background: var(--spinner-color, #fff);
   margin: -4px 0 0 -4px;
 }
-.light-theme {
+.light-theme, .system-theme {
   --spinner-color: black;
 }
-.dark-theme,
-.system-theme {
+.dark-theme{
   --spinner-color: white;
 }
 .lds-roller div:nth-child(1) {
